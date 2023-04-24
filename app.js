@@ -112,10 +112,13 @@ const generateAnswer = (keyword) => {
     location.reload();
   });
 
+  const buttonSound = document.querySelector('#button-sound');
+
   function revealFortune() {
     crystalBall.classList.add("shake");
     loader.style.display = "block";
-  
+    buttonSound.currentTime = 0; // resets audio to beginning on each click
+    buttonSound.play();
     setTimeout(() => {
     loader.style.display = "none";
     crystalBall.classList.remove("shake");
