@@ -143,8 +143,8 @@ input, select {
 }
 
 input:focus, select:focus {
-  border-color: #ee0979;
-  box-shadow: 0 0 5px rgba(238, 9, 121, 0.5);
+  border-color: #000000;
+  box-shadow: 0 0 5px #333333;
 }
 
 button {
