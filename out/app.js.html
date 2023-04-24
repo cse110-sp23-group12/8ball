@@ -1,3 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Answers object containing arrays of responses for different question types
+ * @type {Object.&lt;string, string[]>}
+ */
 const answers = {
   "yes": ["Yes, definitely.", "Absolutely!", "No doubt about it."],
   "no": ["No, sorry.", "Definitely not.", "I don't think so."],
@@ -16,9 +48,13 @@ const answers = {
   "creativity": ["Let your imagination run wild.", "Express yourself.", "Create something amazing."],
   "spirituality": ["Trust your intuition.", "Look within for guidance.", "Connect with your inner self."],
   "advice": ["Listen to your instincts.", "Weigh your options carefully.", "Seek wisdom from others."],
-  "default": ["The stars are aligning...", "Signs point in different directions.", "The answer is shrouded in mystery.", "It's open to interpretation.", "There's more than one possibility.", "It could go either way.", "Things are still unfolding.", "The universe is keeping secrets.", "The answer lies within.", "That's a matter of perspective.", "The winds of change are blowing.", "Intriguing possibilities abound.", "Destiny has many paths.", "The fates have not decided.", "There's magic in the air.", "A confluence of factors is at play.", "Let your intuition guide you.", "Ponder the question deeply.", "Life is full of surprises.", "The cosmos holds the answer."]
+  "default": ["I'm not sure.", "Ask again later.", "I cannot answer that."]
 };
 
+/**
+ * Keywords object containing arrays of keywords for different question types
+ * @type {Object.&lt;string, string[]>}
+ */
 const keywords = {
   "yes": ["will", "can", "is it", "are they", "does", "do", "should", "could", "would", "is", "are"],
   "no": ["won't", "can't", "isn't", "aren't", "don't", "doesn't", "shouldn't", "couldn't", "wouldn't"],
@@ -38,12 +74,24 @@ const keywords = {
   "advice": ["advice", "guidance", "recommendation", "suggestion", "counsel", "help", "insight", "direction", "decision"]
 };
 
+/**
+ * Returns the value of a specified cookie
+ * @param {string} name - The name of the cookie to retrieve
+ * @returns {string|undefined} The value of the cookie, or undefined if the cookie does not exist
+ */
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
+/**
+ * Sets the value of a cookie with the specified name and value
+ * @param {string} name - The name of the cookie to set
+ * @param {string} value - The value to set the cookie to
+ * @param {number} days - The number of days until the cookie expires
+ * @returns {void}
+ */
 const setCookie = (name, value, days) => {
   const date = new Date();
   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -51,6 +99,11 @@ const setCookie = (name, value, days) => {
   document.cookie = `${name}=${value}${expires}; path=/`;
 }
 
+/**
+ * Extracts the keyword from a given question
+ * @param {string} question - The question to extract the keyword from
+ * @returns {string} The keyword for the question, or "default" if no keyword is found
+ */
 const extractKeyword = (question) => {
   let res = "default";
   for (const key in keywords) {
@@ -61,6 +114,11 @@ const extractKeyword = (question) => {
   return res;
 }
 
+/**
+ * Generates a random answer based on a given keyword.
+ * @param {string} keyword - The keyword used to filter the answer pool.
+ * @returns {string} - A random answer from the answer pool.
+ */
 const generateAnswer = (keyword) => {
   const previousAnswer = getCookie(`previousAnswer_${keyword}`);
   const answerPool = answers[keyword];
@@ -77,39 +135,62 @@ const generateAnswer = (keyword) => {
   }
 }
 
+/**
+ * Retrieves the necessary elements from the DOM and sets up event listeners.
+ */
   const userInfoForm = document.getElementById("user-info");
   const crystalBall = document.getElementById("crystal-ball");
   const fortuneText = document.getElementById("fortune-text");
   const loader = document.getElementById("loader");
   const questionInput = document.getElementById("question");
+  const submitButton = userInfoForm.querySelector("button");
   const goBackButton = document.getElementById("go-back");
-  const instructions = document.getElementById("instructions");
-  const title = document.getElementById("title");
 
-  function updateBallState() {
+/**
+ * Enables or disables the submit button based on whether or not the question input has text.
+ */
+  function updateSubmitButtonState() {
     if (questionInput.value.trim()) {
-      crystalBall.style.pointerEvents = "auto";
+      submitButton.disabled = false;
     } else {
-      crystalBall.style.pointerEvents = "none";
+      submitButton.disabled = true;
     }
   }
   
-  questionInput.addEventListener("input", updateBallState);
+  questionInput.addEventListener("input", updateSubmitButtonState);
+  
+/**
+ * Handles form submission by hiding the user info form and displaying the crystal ball.
+ * If no question is entered, an alert is shown.
+ * @param {Event} event - The form submission event.
+ */
+  userInfoForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const question = questionInput.value.trim();
+  
+    if (!question) {
+      alert("Please enter a question.");
+      return;
+    }
+  
+    crystalBall.style.pointerEvents = "auto";
+    userInfoForm.style.display = "none";
+  });
 
+/**
+ * Reloads the page when the "Go Back" button is clicked.
+ */
   goBackButton.addEventListener("click", function () {
     location.reload();
   });
 
   const buttonSound = document.querySelector('#button-sound');
 
+/**
+ * Plays a sound effect, generates a random answer, and displays it in the fortune text element.
+ * The fortune text is animated in and the "Go Back" button is shown.
+ */
   function revealFortune() {
-    // old submit button functionality
-    title.style.display = "none";
-    const question = questionInput.value.trim();
-    console.log(question)
-    userInfoForm.style.display = "none";
-
-    instructions.style.display = "none";
     crystalBall.classList.add("shake");
     loader.style.display = "block";
     buttonSound.currentTime = 0; // resets audio to beginning on each click
@@ -133,11 +214,32 @@ const generateAnswer = (keyword) => {
 
     setTimeout(() => {
       fortuneText.classList.remove("visible");
-      instructions.innerHTML = `Click again for a new response!`
-      instructions.style.display = "block";
-    }, 3000);
+    }, 5000);
   }, 2000);
   }
   
 crystalBall.addEventListener("click", revealFortune);
 crystalBall.style.pointerEvents = "none";
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#answers">answers</a></li><li><a href="global.html#extractKeyword">extractKeyword</a></li><li><a href="global.html#generateAnswer">generateAnswer</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#keywords">keywords</a></li><li><a href="global.html#revealFortune">revealFortune</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#updateSubmitButtonState">updateSubmitButtonState</a></li><li><a href="global.html#userInfoForm">userInfoForm</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Apr 24 2023 15:53:21 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
