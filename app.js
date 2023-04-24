@@ -95,6 +95,13 @@ const generateAnswer = (keyword) => {
       crystalBall.style.pointerEvents = "none";
     }
   }
+  // Used to capitalize the first letter of the question
+  function capitalizeFirstLetter(str) {
+    if (str.charAt(0) !== str.charAt(0).toUpperCase()) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    return str;
+  }
   
   questionInput.addEventListener("input", updateBallState);
 
@@ -110,7 +117,8 @@ const generateAnswer = (keyword) => {
     userInfoForm.style.display = "none";
     instructions.style.display = "none";
 
-    const question = questionInput.value.trim(); // the question text
+    let question = questionInput.value.trim(); // the question text
+    question = capitalizeFirstLetter(question)
 
     // Add a question mark to the end of the question if there isn't one
     const lastLetter = question.substr(question.length - 1);
@@ -149,5 +157,16 @@ const generateAnswer = (keyword) => {
   }
   
 crystalBall.addEventListener("click", revealFortune);
+
+// Event listener for the enter key
+questionInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    // prevent the default form submission behavior
+    event.preventDefault();
+    revealFortune();
+  }
+});
+
 // reset the ball to be unclickable until new text is added
 crystalBall.style.pointerEvents = "none";
+
