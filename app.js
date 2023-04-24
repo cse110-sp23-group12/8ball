@@ -85,6 +85,7 @@ const generateAnswer = (keyword) => {
   const goBackButton = document.getElementById("go-back");
   const instructions = document.getElementById("instructions");
   const title = document.getElementById("title");
+  const questionAsked = document.getElementById("question-asked");
 
   function updateBallState() {
     if (questionInput.value.trim()) {
@@ -107,6 +108,7 @@ const generateAnswer = (keyword) => {
     title.style.display = "none";
     const question = questionInput.value.trim();
     console.log(question)
+    questionAsked.innerHTML = `<strong>${question}</strong>`;
     userInfoForm.style.display = "none";
 
     instructions.style.display = "none";
@@ -135,6 +137,8 @@ const generateAnswer = (keyword) => {
       fortuneText.classList.remove("visible");
       instructions.innerHTML = `Click again for a new response!`
       instructions.style.display = "block";
+      questionAsked.innerHTML = ``;
+
     }, 3000);
   }, 2000);
   }
