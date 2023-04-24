@@ -107,8 +107,11 @@ const generateAnswer = (keyword) => {
     // old submit button functionality
     title.style.display = "none";
     const question = questionInput.value.trim();
-    console.log(question)
-    questionAsked.innerHTML = `<strong>${question}</strong>`;
+
+    const lastLetter = question.substr(question.length - 1);
+
+    // ternary function to add question mark
+    questionAsked.innerHTML = lastLetter == '?' ? `<strong>${question}</strong>` : `<strong>${question}?</strong>`;
     userInfoForm.style.display = "none";
 
     instructions.style.display = "none";
@@ -122,7 +125,6 @@ const generateAnswer = (keyword) => {
 
     const keyword = extractKeyword(questionInput.value.trim())
     const answer = generateAnswer(keyword);
-    console.log(answer);
     fortuneText.textContent = answer;
 
     fortuneText.classList.add("fade-in-up");
