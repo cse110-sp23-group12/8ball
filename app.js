@@ -87,6 +87,7 @@ const generateAnswer = (keyword) => {
   const title = document.getElementById("title");
   const questionAsked = document.getElementById("question-asked");
 
+  // Allow the 8-ball to be clicked only when there is text
   function updateBallState() {
     if (questionInput.value.trim()) {
       crystalBall.style.pointerEvents = "auto";
@@ -104,17 +105,19 @@ const generateAnswer = (keyword) => {
   const buttonSound = document.querySelector('#button-sound');
 
   function revealFortune() {
-    // old submit button functionality
+    // Remove unnecessary text when the question is submitted
     title.style.display = "none";
-    const question = questionInput.value.trim();
+    userInfoForm.style.display = "none";
+    instructions.style.display = "none";
 
+    const question = questionInput.value.trim(); // the question text
+
+    // Add a question mark to the end of the question if there isn't one
     const lastLetter = question.substr(question.length - 1);
-
     // ternary function to add question mark
     questionAsked.innerHTML = lastLetter == '?' ? `<strong>${question}</strong>` : `<strong>${question}?</strong>`;
-    userInfoForm.style.display = "none";
 
-    instructions.style.display = "none";
+    // Shake the ball and play sound
     crystalBall.classList.add("shake");
     loader.style.display = "block";
     buttonSound.currentTime = 0; // resets audio to beginning on each click
@@ -135,15 +138,16 @@ const generateAnswer = (keyword) => {
       goBackButton.style.display = "block"; // Show the "Go Back" button
     }, 500);
 
+    // After 3 secs (3000 ms) remove some text and change/add the instructions
     setTimeout(() => {
       fortuneText.classList.remove("visible");
       instructions.innerHTML = `Click again for a new response!`
       instructions.style.display = "block";
       questionAsked.innerHTML = ``;
-
     }, 3000);
   }, 2000);
   }
   
 crystalBall.addEventListener("click", revealFortune);
+// reset the ball to be unclickable until new text is added
 crystalBall.style.pointerEvents = "none";
