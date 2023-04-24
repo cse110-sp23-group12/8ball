@@ -82,34 +82,19 @@ const generateAnswer = (keyword) => {
   const fortuneText = document.getElementById("fortune-text");
   const loader = document.getElementById("loader");
   const questionInput = document.getElementById("question");
-  const submitButton = userInfoForm.querySelector("button");
   const goBackButton = document.getElementById("go-back");
   const instructions = document.getElementById("instructions");
   const title = document.getElementById("title");
 
-  function updateSubmitButtonState() {
+  function updateBallState() {
     if (questionInput.value.trim()) {
-      submitButton.disabled = false;
+      crystalBall.style.pointerEvents = "auto";
     } else {
-      submitButton.disabled = true;
+      crystalBall.style.pointerEvents = "none";
     }
   }
   
-  questionInput.addEventListener("input", updateSubmitButtonState);
-  
-  userInfoForm.addEventListener("submit", function (event) {
-    title.style.display = "none";
-    event.preventDefault();
-    const question = questionInput.value.trim();
-  
-    if (!question) {
-      alert("Please enter a question.");
-      return;
-    }
-  
-    crystalBall.style.pointerEvents = "auto";
-    userInfoForm.style.display = "none";
-  });
+  questionInput.addEventListener("input", updateBallState);
 
   goBackButton.addEventListener("click", function () {
     location.reload();
@@ -118,6 +103,12 @@ const generateAnswer = (keyword) => {
   const buttonSound = document.querySelector('#button-sound');
 
   function revealFortune() {
+    // old submit button functionality
+    title.style.display = "none";
+    const question = questionInput.value.trim();
+    console.log(question)
+    userInfoForm.style.display = "none";
+
     instructions.style.display = "none";
     crystalBall.classList.add("shake");
     loader.style.display = "block";
