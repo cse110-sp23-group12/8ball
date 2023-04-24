@@ -160,7 +160,7 @@ button {
 }
 
 button:hover {
-  background-color: #d80768;
+  background-color: #444444;
 }
 
 button:disabled {
