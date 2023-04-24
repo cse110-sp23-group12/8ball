@@ -12,7 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: linear-gradient(to right top, #334444, #778888);
+  background-image: linear-gradient(to right top, rgba(4, 4, 60), #089c9c);
   color: #fff;
 }
 
