@@ -84,6 +84,8 @@ const generateAnswer = (keyword) => {
   const questionInput = document.getElementById("question");
   const submitButton = userInfoForm.querySelector("button");
   const goBackButton = document.getElementById("go-back");
+  const instructions = document.getElementById("instructions");
+  const title = document.getElementById("title");
 
   function updateSubmitButtonState() {
     if (questionInput.value.trim()) {
@@ -96,6 +98,7 @@ const generateAnswer = (keyword) => {
   questionInput.addEventListener("input", updateSubmitButtonState);
   
   userInfoForm.addEventListener("submit", function (event) {
+    title.style.display = "none";
     event.preventDefault();
     const question = questionInput.value.trim();
   
@@ -115,6 +118,7 @@ const generateAnswer = (keyword) => {
   const buttonSound = document.querySelector('#button-sound');
 
   function revealFortune() {
+    instructions.style.display = "none";
     crystalBall.classList.add("shake");
     loader.style.display = "block";
     buttonSound.currentTime = 0; // resets audio to beginning on each click
@@ -138,7 +142,9 @@ const generateAnswer = (keyword) => {
 
     setTimeout(() => {
       fortuneText.classList.remove("visible");
-    }, 5000);
+      instructions.innerHTML = `Click again for a new response!`
+      instructions.style.display = "block";
+    }, 3000);
   }, 2000);
   }
   
