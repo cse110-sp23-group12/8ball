@@ -16,7 +16,7 @@ const answers = {
   "creativity": ["Let your imagination run wild.", "Express yourself.", "Create something amazing."],
   "spirituality": ["Trust your intuition.", "Look within for guidance.", "Connect with your inner self."],
   "advice": ["Listen to your instincts.", "Weigh your options carefully.", "Seek wisdom from others."],
-  "default": ["I'm not sure.", "Ask again later.", "I cannot answer that."]
+  "default": ["The stars are aligning...", "Signs point in different directions.", "The answer is shrouded in mystery.", "It's open to interpretation.", "There's more than one possibility.", "It could go either way.", "Things are still unfolding.", "The universe is keeping secrets.", "The answer lies within.", "That's a matter of perspective.", "The winds of change are blowing.", "Intriguing possibilities abound.", "Destiny has many paths.", "The fates have not decided.", "There's magic in the air.", "A confluence of factors is at play.", "Let your intuition guide you.", "Ponder the question deeply.", "Life is full of surprises.", "The cosmos holds the answer."]
 };
 
 const keywords = {
