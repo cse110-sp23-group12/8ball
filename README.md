@@ -1,3 +1,5 @@
+![https://cse110-sp23-group12.github.io/8ball/](https://cse110-sp23-group12.github.io/8ball/)
+
 # Magic 8-Ball Game
 This is a JavaScript program that simulates a Magic 8-ball game. The user asks a yes or no question and the program generates a random answer from a list of possible answers. The program uses an event listener to listen for the user clicking a button, and another function to generate and display the answer.
 
