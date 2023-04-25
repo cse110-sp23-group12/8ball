@@ -38,12 +38,24 @@ const keywords = {
   "advice": ["advice", "guidance", "recommendation", "suggestion", "counsel", "help", "insight", "direction", "decision"]
 };
 
+/**
+ * Retrieves the value of a cookie by its name.
+ * @param {string} name - The name of the cookie.
+ * @returns {string|undefined} - The value of the cookie or undefined if not found.
+ */
+
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
+/**
+ * Sets a cookie with a specified name, value and expiration date.
+ * @param {string} name - The name of the cookie.
+ * @param {string} value - The value of the cookie.
+ * @param {number} days - The number of days until the cookie expires.
+ */
 const setCookie = (name, value, days) => {
   const date = new Date();
   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -51,6 +63,11 @@ const setCookie = (name, value, days) => {
   document.cookie = `${name}=${value}${expires}; path=/`;
 }
 
+/**
+ * Extracts a keyword from a question by checking if it contains any of the predefined keywords.
+ * @param {string} question - The question to extract the keyword from.
+ * @returns {string} - The extracted keyword or "default" if none were found.
+ */
 const extractKeyword = (question) => {
   let res = "default";
   for (const key in keywords) {
@@ -61,6 +78,11 @@ const extractKeyword = (question) => {
   return res;
 }
 
+/**
+ * Generates an answer based on a keyword and saves the answer in a cookie to avoid repeating it.
+ * @param {string} keyword - The keyword to generate the answer for.
+ * @returns {string} - The generated answer.
+ */
 const generateAnswer = (keyword) => {
   const previousAnswer = getCookie(`previousAnswer_${keyword}`);
   const answerPool = answers[keyword];
@@ -77,6 +99,7 @@ const generateAnswer = (keyword) => {
   }
 }
 
+// DOM elements
   const userInfoForm = document.getElementById("user-info");
   const crystalBall = document.getElementById("crystal-ball");
   const fortuneText = document.getElementById("fortune-text");
@@ -87,7 +110,10 @@ const generateAnswer = (keyword) => {
   const title = document.getElementById("title");
   const questionAsked = document.getElementById("question-asked");
 
-  // Allow the 8-ball to be clicked only when there is text
+/**
+ * Updates the state of the crystal ball based on the input in the question input field.
+ * Allows the 8-ball to be clicked only when there is text
+ */
   function updateBallState() {
     if (questionInput.value.trim()) {
       crystalBall.style.pointerEvents = "auto";
@@ -95,14 +121,20 @@ const generateAnswer = (keyword) => {
       crystalBall.style.pointerEvents = "none";
     }
   }
-  // Used to capitalize the first letter of the question
+
+/**
+ * Capitalizes the first letter of a string.
+ * @param {string} str - The string to capitalize the first letter of.
+ * @returns {string} - The capitalized string.
+ */
   function capitalizeFirstLetter(str) {
     if (str.charAt(0) !== str.charAt(0).toUpperCase()) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     }
     return str;
   }
-  
+
+  // Event listeners  
   questionInput.addEventListener("input", updateBallState);
 
   goBackButton.addEventListener("click", function () {
@@ -111,6 +143,10 @@ const generateAnswer = (keyword) => {
 
   const buttonSound = document.querySelector('#button-sound');
 
+/**
+ * Reveals the fortune by generating an answer based on the extracted keyword and the question text.
+ * Animates the fortune text and displays a "Go Back" button after showing the answer for 3 seconds.
+ */
   function revealFortune() {
     // Remove unnecessary text when the question is submitted
     title.style.display = "none";
@@ -156,6 +192,7 @@ const generateAnswer = (keyword) => {
   }, 2000);
   }
   
+// Event listener for the crystal ball click
 crystalBall.addEventListener("click", revealFortune);
 
 // Event listener for the enter key
@@ -167,6 +204,6 @@ questionInput.addEventListener('keydown', function(event) {
   }
 });
 
-// reset the ball to be unclickable until new text is added
+// Reset the ball to be unclickable until new text is added
 crystalBall.style.pointerEvents = "none";
 

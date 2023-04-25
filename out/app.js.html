@@ -26,11 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Answers object containing arrays of responses for different question types
- * @type {Object.&lt;string, string[]>}
- */
-const answers = {
+            <pre class="prettyprint source linenums"><code>const answers = {
   "yes": ["Yes, definitely.", "Absolutely!", "No doubt about it."],
   "no": ["No, sorry.", "Definitely not.", "I don't think so."],
   "maybe": ["Maybe.", "It's possible.", "I'm not sure."],
@@ -48,13 +44,9 @@ const answers = {
   "creativity": ["Let your imagination run wild.", "Express yourself.", "Create something amazing."],
   "spirituality": ["Trust your intuition.", "Look within for guidance.", "Connect with your inner self."],
   "advice": ["Listen to your instincts.", "Weigh your options carefully.", "Seek wisdom from others."],
-  "default": ["I'm not sure.", "Ask again later.", "I cannot answer that."]
+  "default": ["The stars are aligning...", "Signs point in different directions.", "The answer is shrouded in mystery.", "It's open to interpretation.", "There's more than one possibility.", "It could go either way.", "Things are still unfolding.", "The universe is keeping secrets.", "The answer lies within.", "That's a matter of perspective.", "The winds of change are blowing.", "Intriguing possibilities abound.", "Destiny has many paths.", "The fates have not decided.", "There's magic in the air.", "A confluence of factors is at play.", "Let your intuition guide you.", "Ponder the question deeply.", "Life is full of surprises.", "The cosmos holds the answer."]
 };
 
-/**
- * Keywords object containing arrays of keywords for different question types
- * @type {Object.&lt;string, string[]>}
- */
 const keywords = {
   "yes": ["will", "can", "is it", "are they", "does", "do", "should", "could", "would", "is", "are"],
   "no": ["won't", "can't", "isn't", "aren't", "don't", "doesn't", "shouldn't", "couldn't", "wouldn't"],
@@ -75,10 +67,11 @@ const keywords = {
 };
 
 /**
- * Returns the value of a specified cookie
- * @param {string} name - The name of the cookie to retrieve
- * @returns {string|undefined} The value of the cookie, or undefined if the cookie does not exist
+ * Retrieves the value of a cookie by its name.
+ * @param {string} name - The name of the cookie.
+ * @returns {string|undefined} - The value of the cookie or undefined if not found.
  */
+
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -86,11 +79,10 @@ const getCookie = (name) => {
 }
 
 /**
- * Sets the value of a cookie with the specified name and value
- * @param {string} name - The name of the cookie to set
- * @param {string} value - The value to set the cookie to
- * @param {number} days - The number of days until the cookie expires
- * @returns {void}
+ * Sets a cookie with a specified name, value and expiration date.
+ * @param {string} name - The name of the cookie.
+ * @param {string} value - The value of the cookie.
+ * @param {number} days - The number of days until the cookie expires.
  */
 const setCookie = (name, value, days) => {
   const date = new Date();
@@ -100,9 +92,9 @@ const setCookie = (name, value, days) => {
 }
 
 /**
- * Extracts the keyword from a given question
- * @param {string} question - The question to extract the keyword from
- * @returns {string} The keyword for the question, or "default" if no keyword is found
+ * Extracts a keyword from a question by checking if it contains any of the predefined keywords.
+ * @param {string} question - The question to extract the keyword from.
+ * @returns {string} - The extracted keyword or "default" if none were found.
  */
 const extractKeyword = (question) => {
   let res = "default";
@@ -115,9 +107,9 @@ const extractKeyword = (question) => {
 }
 
 /**
- * Generates a random answer based on a given keyword.
- * @param {string} keyword - The keyword used to filter the answer pool.
- * @returns {string} - A random answer from the answer pool.
+ * Generates an answer based on a keyword and saves the answer in a cookie to avoid repeating it.
+ * @param {string} keyword - The keyword to generate the answer for.
+ * @returns {string} - The generated answer.
  */
 const generateAnswer = (keyword) => {
   const previousAnswer = getCookie(`previousAnswer_${keyword}`);
@@ -135,51 +127,44 @@ const generateAnswer = (keyword) => {
   }
 }
 
-/**
- * Retrieves the necessary elements from the DOM and sets up event listeners.
- */
+// DOM elements
   const userInfoForm = document.getElementById("user-info");
   const crystalBall = document.getElementById("crystal-ball");
   const fortuneText = document.getElementById("fortune-text");
   const loader = document.getElementById("loader");
   const questionInput = document.getElementById("question");
-  const submitButton = userInfoForm.querySelector("button");
   const goBackButton = document.getElementById("go-back");
+  const instructions = document.getElementById("instructions");
+  const title = document.getElementById("title");
+  const questionAsked = document.getElementById("question-asked");
 
 /**
- * Enables or disables the submit button based on whether or not the question input has text.
+ * Updates the state of the crystal ball based on the input in the question input field.
+ * Allows the 8-ball to be clicked only when there is text
  */
-  function updateSubmitButtonState() {
+  function updateBallState() {
     if (questionInput.value.trim()) {
-      submitButton.disabled = false;
+      crystalBall.style.pointerEvents = "auto";
     } else {
-      submitButton.disabled = true;
+      crystalBall.style.pointerEvents = "none";
     }
   }
-  
-  questionInput.addEventListener("input", updateSubmitButtonState);
-  
-/**
- * Handles form submission by hiding the user info form and displaying the crystal ball.
- * If no question is entered, an alert is shown.
- * @param {Event} event - The form submission event.
- */
-  userInfoForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const question = questionInput.value.trim();
-  
-    if (!question) {
-      alert("Please enter a question.");
-      return;
-    }
-  
-    crystalBall.style.pointerEvents = "auto";
-    userInfoForm.style.display = "none";
-  });
 
 /**
- * Reloads the page when the "Go Back" button is clicked.
+ * Capitalizes the first letter of a string.
+ * @param {string} str - The string to capitalize the first letter of.
+ * @returns {string} - The capitalized string.
  */
+  function capitalizeFirstLetter(str) {
+    if (str.charAt(0) !== str.charAt(0).toUpperCase()) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    return str;
+  }
+
+  // Event listeners  
+  questionInput.addEventListener("input", updateBallState);
+
   goBackButton.addEventListener("click", function () {
     location.reload();
   });
@@ -187,10 +172,24 @@ const generateAnswer = (keyword) => {
   const buttonSound = document.querySelector('#button-sound');
 
 /**
- * Plays a sound effect, generates a random answer, and displays it in the fortune text element.
- * The fortune text is animated in and the "Go Back" button is shown.
+ * Reveals the fortune by generating an answer based on the extracted keyword and the question text.
+ * Animates the fortune text and displays a "Go Back" button after showing the answer for 3 seconds.
  */
   function revealFortune() {
+    // Remove unnecessary text when the question is submitted
+    title.style.display = "none";
+    userInfoForm.style.display = "none";
+    instructions.style.display = "none";
+
+    let question = questionInput.value.trim(); // the question text
+    question = capitalizeFirstLetter(question)
+
+    // Add a question mark to the end of the question if there isn't one
+    const lastLetter = question.substr(question.length - 1);
+    // ternary function to add question mark
+    questionAsked.innerHTML = lastLetter == '?' ? `&lt;strong>${question}&lt;/strong>` : `&lt;strong>${question}?&lt;/strong>`;
+
+    // Shake the ball and play sound
     crystalBall.classList.add("shake");
     loader.style.display = "block";
     buttonSound.currentTime = 0; // resets audio to beginning on each click
@@ -201,7 +200,6 @@ const generateAnswer = (keyword) => {
 
     const keyword = extractKeyword(questionInput.value.trim())
     const answer = generateAnswer(keyword);
-    console.log(answer);
     fortuneText.textContent = answer;
 
     fortuneText.classList.add("fade-in-up");
@@ -212,14 +210,31 @@ const generateAnswer = (keyword) => {
       goBackButton.style.display = "block"; // Show the "Go Back" button
     }, 500);
 
+    // After 3 secs (3000 ms) remove some text and change/add the instructions
     setTimeout(() => {
       fortuneText.classList.remove("visible");
-    }, 5000);
+      instructions.innerHTML = `Click again for a new response!`
+      instructions.style.display = "block";
+      questionAsked.innerHTML = ``;
+    }, 3000);
   }, 2000);
   }
   
+// Event listener for the crystal ball click
 crystalBall.addEventListener("click", revealFortune);
+
+// Event listener for the enter key
+questionInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    // prevent the default form submission behavior
+    event.preventDefault();
+    revealFortune();
+  }
+});
+
+// Reset the ball to be unclickable until new text is added
 crystalBall.style.pointerEvents = "none";
+
 </code></pre>
         </article>
     </section>
@@ -230,13 +245,13 @@ crystalBall.style.pointerEvents = "none";
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#answers">answers</a></li><li><a href="global.html#extractKeyword">extractKeyword</a></li><li><a href="global.html#generateAnswer">generateAnswer</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#keywords">keywords</a></li><li><a href="global.html#revealFortune">revealFortune</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#updateSubmitButtonState">updateSubmitButtonState</a></li><li><a href="global.html#userInfoForm">userInfoForm</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li><li><a href="global.html#extractKeyword">extractKeyword</a></li><li><a href="global.html#generateAnswer">generateAnswer</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#revealFortune">revealFortune</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#updateBallState">updateBallState</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Apr 24 2023 15:53:21 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Apr 24 2023 19:18:22 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
