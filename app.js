@@ -197,7 +197,8 @@ crystalBall.addEventListener("click", revealFortune);
 
 // Event listener for the enter key
 questionInput.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
+  // Only allow enter if there is text in the box
+  if (event.key === 'Enter' && questionInput.value.trim()) {
     // prevent the default form submission behavior
     event.preventDefault();
     revealFortune();
