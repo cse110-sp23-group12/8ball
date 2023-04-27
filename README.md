@@ -6,6 +6,9 @@ This is a JavaScript program that simulates a Magic 8-ball game. The user asks a
 ## Usage
 This is a JavaScript program that simulates a Magic 8-ball game. The user asks a yes or no question and the program generates a random answer from a list of possible answers. The program uses an event listener to listen for the user clicking a button, and another function to generate and display the answer.
 
+https://user-images.githubusercontent.com/66709835/234735671-da94859f-b242-4f10-9030-254c836e9c14.mp4
+
+
 ## Code Overview
 The program consists of two main parts:
 1. An array of possible answers
